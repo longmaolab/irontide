@@ -62,7 +62,7 @@ battleship through a 31-theater world campaign. You're not locked to the
 helm — hop into a plane, drive an amphibious tank ashore, or fight on
 foot, and mount extra cannons on your deck between battles. A rival
 admiral, Grand Marshal Varga, taunts you over story radio dialogue as
-you chase 3-star ratings, 12 medals, and a family high-score board.
+you chase 3-star ratings, 12 medals, and a shareable battle report card.
 Dynamic weather, procedural music for every theater, photo mode, quick
 battle and sandbox modes, full English/Chinese localization. Built with
 three.js as (almost) a single HTML file — no install, no account, no ads.
@@ -111,7 +111,7 @@ fly planes, drive amphibious tanks, or fight on foot, and mount extra
 cannons on your deck between missions. Boss rival with story radio
 dialogue, dynamic weather, procedural per-theater music (31 profiles),
 photo mode, adaptive quality with bloom, EN/中文. There's also an early
-multiplayer mode, clearly experimental for now.
+multiplayer mode on the game's own site, clearly experimental for now (the portal builds are single-player).
 
 Family project: my kid (GitHub: VideoGameTips) designed and built the game
 solo — I maintain the polished open-source fork (bug fixes, i18n,
@@ -247,7 +247,7 @@ parent. New gameplay Short every Tuesday.
 - 标题中文备用:`在自家战列舰甲板上加装大炮(免费网页游戏)`
 - Shot list(约 30 秒):
   - 0–3s:战列舰满舷齐射(hook,直接开炮)
-  - 3–12s:进港,打开商店,按 F 购买/安装甲板炮(录下按键提示 UI)
+  - 3–12s:按 Tab 开军械库买炮,按 F 装到甲板上(录下按键提示 UI)
   - 12–18s:镜头扫过甲板上新增的炮
   - 18–28s:出港实战,加炮后的齐射打中敌舰
   - 28–30s:结尾字卡 "Free in your browser — link in description"
@@ -373,7 +373,7 @@ No install. No account. No ads.
 
 ### 5.5 其他备好的资产
 
-- `promo/builds/irontide-itch.zip` — 本轮三个渠道都不需要上传构建包(全部只要 URL),留着给以后 itch.io 等需要传包的平台。
+- `promo/builds/irontide-itch.zip（与门户版一样是单机版）` — 本轮三个渠道都不需要上传构建包(全部只要 URL),留着给以后 itch.io 等需要传包的平台。
 
 ---
 

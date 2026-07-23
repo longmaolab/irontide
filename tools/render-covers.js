@@ -5,7 +5,7 @@ const fs = require('fs'), path = require('path'), { execSync } = require('child_
 const A = require('path').join(__dirname, '..', 'promo', 'assets', 'final');
 const b64 = f => 'data:image/png;base64,' + fs.readFileSync(path.join(A, f)).toString('base64');
 
-const card = (bg, w, h, titleSize, tagSize, badgeSize, tagline, showTag) => `
+const card = (bg, w, h, titleSize, tagSize, badgeSize, tagline, showTag, showBadge = true) => `
 <style>
   *{margin:0;padding:0;box-sizing:border-box}
   body{width:${w}px;height:${h}px;overflow:hidden;font-family:'Futura','Avenir Next',system-ui,sans-serif}
@@ -34,7 +34,7 @@ const card = (bg, w, h, titleSize, tagSize, badgeSize, tagline, showTag) => `
     <div class="rule"></div>
     ${showTag ? `<p>${tagline}</p>` : ''}
   </div>
-  <div class="badge">FREE IN YOUR BROWSER</div>
+  ${showBadge ? '<div class="badge">FREE IN YOUR BROWSER</div>' : ''}
 </div>`;
 
 (async () => {
@@ -48,10 +48,18 @@ const card = (bg, w, h, titleSize, tagSize, badgeSize, tagline, showTag) => `
       tag: 'A 31-theater naval campaign<br>that runs in your browser.', showTag: true },
     { out: 'thumb-titled-240x240.png', src: '02-combat-hud.png', w: 240, h: 240, t: 25, g: 10, b: 7,
       tag: '', showTag: false },
+    // CrazyGames requires all three aspect ratios, and its cover rules allow the game
+    // name only — no tagline, no "Play now" badge, no logos. Hence showTag/showBadge off.
+    { out: 'cover-cg-landscape-1920x1080.png', src: '03-broadside.png', w: 1920, h: 1080, t: 130, g: 40, b: 26,
+      tag: '', showTag: false, showBadge: false },
+    { out: 'cover-cg-portrait-800x1200.png', src: '05-night.png', w: 800, h: 1200, t: 66, g: 22, b: 15,
+      tag: '', showTag: false, showBadge: false },
+    { out: 'cover-cg-square-800x800.png', src: '02-combat-hud.png', w: 800, h: 800, t: 62, g: 20, b: 14,
+      tag: '', showTag: false, showBadge: false },
   ];
   for (const j of jobs) {
     const page = await browser.newPage({ viewport: { width: j.w, height: j.h }, deviceScaleFactor: 2 });
-    await page.setContent(card(b64(j.src), j.w, j.h, j.t, j.g, j.b, j.tag, j.showTag));
+    await page.setContent(card(b64(j.src), j.w, j.h, j.t, j.g, j.b, j.tag, j.showTag, j.showBadge !== false));
     await page.waitForTimeout(350);
     const tmp = path.join(A, '.raw-' + j.out);
     await page.screenshot({ path: tmp });

@@ -25,7 +25,7 @@
 - 首屏要有可见的加载提示(游戏本身 ~800KB、秒开,问题不大,但 NG 玩家对白屏零容忍)。
 - 声音必须在用户点击/按键之后才开始播放(浏览器自动播放策略;确认游戏有"点击开始"一类的首屏)。
 
-本地验证命令(完整玩 2 分钟,含开炮、进港口商店按 F、按 L 拍照):
+本地验证命令(完整玩 2 分钟,含开炮、按 Tab 开军械库、按 L 拍照):
 
 ```
 cd /private/tmp/claude-501/-Users-longmao-projects-irontide/e9d1afc0-4a5f-4659-8c07-dd4a2040f5a2/scratchpad
@@ -81,14 +81,14 @@ FEATURES
 - 31-theater world campaign with a story rival
 - Battleship + planes + amphibious tanks + infantry combat
 - Mount extra deck cannons at the port shop
-- 12 in-game medals, 3-star ratings per theater, family high-score board
+- 12 in-game medals, a 3-star rating on every theater, and a battle report card you can save as a PNG
 - Quick battle mode and sandbox maps
 - Dynamic weather, and procedural music with a unique profile for every theater
 - Photo mode (press L)
 - Quality settings + adaptive quality with bloom
 - Keyboard/mouse, gamepad and touch — plays on desktop and mobile
 - English / 中文
-- Experimental early multiplayer (rough edges expected)
+- Single-player campaign, quick battle, and sandbox maps
 
 Free, no account, no ads, loads in seconds. Built with three.js, and fully open source (links in the author comments).
 ```
@@ -107,7 +107,7 @@ It's fully open source:
 A few notes:
 - The 12 medals are in-game medals, not Newgrounds API medals (maybe someday).
 - Multiplayer is EXPERIMENTAL and early — single player is the real game.
-- Tips: press F at the port shop to mount extra deck cannons; press L for photo mode.
+- Tips: press Tab for the armory, buy a gun, then F to bolt it onto your deck; press L for photo mode.
 
 Honest feedback is genuinely welcome — especially anything that feels bad in the first five minutes. My kid reads the constructive reviews (I filter first; this is Newgrounds, after all). Thanks for playing!
 ```
@@ -133,15 +133,19 @@ ocean
 
 ### 2.6 Rating(适龄分级)—— 选 **T**
 
-内容描述项(descriptors)按实际情况勾:
+Newgrounds 的投稿表单**不是 ESRB 那种"轻/中/重"分级**,而是五个勾选框。照下面勾:
 
-- Violence(暴力):**Mild**(军事载具战斗、爆炸,卡通化,无血腥)
-- Blood/Gore(血腥):None
-- Nudity(裸露):None
-- Language(粗口):None
-- Adult Themes(成人主题):None
+- Nudity/Sexual:**不勾**
+- Violence:**勾上**(军事载具战斗、爆炸、核打击与神风机)
+- Explicit Audio:**不勾**
+- Explicit Text:**不勾**
+- Adult Themes:**不勾**(战争题材,但无血腥、无脏话)
 
-最终分级选 **T**。理由:纯看内容 E 也许说得过去(无血、无粗口),但这是持续的军事射击题材,选 T 更稳——避免玩家举报"分级过低"导致员工重新分级、影响账号信誉。T ≈ 13+,不影响 NG 主流受众。
+⚠️ **填表前先知道游戏里有什么**:游戏包含核打击载具(B-29 / Tu-95 等历史核载机、一架"原子打击无人机")和几架专用神风机,而且**默认是开着的**。设置面板(按 K)里有「家长模式(无核武)」开关可以关掉这些,但默认关闭。
+
+所以别在任何地方把游戏描述成"只有卡通爆炸"——那对审核和玩家都不诚实,而且 NG 的社区判定期里一定有人玩到。如实勾 Violence、分级选 **T**(≈13+)就够了,这也是 NG 上同类军事题材的常规做法。
+
+**可选的更稳做法**:如果希望在 NG 上以更低分级示人,可以在给 NG 的这份构建里把 `SETTINGS.contentFilter` 默认改成 `true`(家长模式默认开),核武与神风内容就不出现,再按 E 分级提交。这是产品决定,不是必须。
 
 ### 2.7 AI 内容申报(如果表单问到)
 
@@ -217,7 +221,7 @@ Height: 720
 好评/鼓励类:
 
 ```
-Thanks for playing, and for the kind words! I'll pass this along — my kid (who built the game) will be thrilled. If you haven't yet, try mounting extra cannons at the port shop (F key).
+Thanks for playing, and for the kind words! I'll pass this along — my kid (who built the game) will be thrilled. If you haven't yet, try buying a gun in the armory (Tab) and bolting it onto your deck with F.
 ```
 
 建设性批评类(哪怕语气冲,只回内容):
@@ -235,7 +239,7 @@ Thanks for the report! Could you share your browser/device and roughly where it 
 多人模式抱怨类:
 
 ```
-Fair — multiplayer is experimental and early, which is why it's labeled that way. Single player (the 31-theater campaign) is the real game right now. Multiplayer feedback still helps though, so thanks.
+Good catch — this upload is single-player only, so there's no multiplayer button here. There is an experimental multiplayer mode, but it only runs on the game's own site (game.boobank.com/irontide) and it's rough. The 31-theater campaign is the real game right now.
 ```
 
 ---

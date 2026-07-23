@@ -10,7 +10,7 @@
 | 时间 | 做什么 |
 |---|---|
 | **今天 7/24(周五)** | 注册账号 → 新建项目 → 按第 2 节逐字段填完 → 存为 **Draft** → 用 Draft 预览页实测游戏能玩 |
-| **7/25(周六)上午** | 按第 6 节 shot list 录 30–60 秒视频 → 传 YouTube(公开或不公开均可)→ 把链接填进 itch 页面 |
+| **7/25(周六)上午** | 把 `promo/assets/final/iron-tide-hero-45s.mp4` 传到 YouTube(公开或不公开均可)→ 链接填进 itch 页面。**不用自己录**,第 6 节的 shot list 只在你想重录时才需要 |
 | **7/25(周六)下午** | Visibility 改为 **Public** 正式发布 → 立刻发第 4 节的首篇 devlog |
 | **7/27(下周一)起** | 按第 7 节做发布后动作;开始逛 itch.io/jams 找合适的 game jam(itch 的流量引擎是 jam,不是首页) |
 
@@ -23,14 +23,14 @@
 确认以下文件已就位:
 
 - `promo/assets/final/01-menu.png` … `final/06-briefing.png`(截图 6 张)
-- `promo/builds/irontide-itch.zip`(网页版构建包)
+- `promo/builds/irontide-itch.zip（与门户版一样是单机版）`(网页版构建包)
 - 封面图:需要一张 **630×500**(最低 315×250)的 PNG。从 screenshot 里裁一张最有戏剧性的,或进游戏按 **L** 开拍照模式专门取景一张再裁
-- 30–60 秒视频(周六录,见第 6 节)
+- 视频:`promo/assets/final/iron-tide-hero-45s.mp4`(**已生成**,48 秒;短版和竖版同目录)
 
 **检查 zip 结构(关键)**:`index.html` 必须在 zip 的**根目录**,不能套一层文件夹。同包应含 `vendor/`、`manifest.json`、`sw.js`、`icons/`。验证命令:
 
 ```
-unzip -l promo/builds/irontide-itch.zip | head
+unzip -l promo/builds/irontide-itch.zip（与门户版一样是单机版） | head
 ```
 
 第一列文件里应直接看到 `index.html`,而不是 `irontide/index.html`。
@@ -102,7 +102,7 @@ Command a battleship — then fly the planes, drive the tanks, and storm the bea
 
 ### 2.3 Uploads(上传构建包)
 
-1. 点 **Upload files**,选 `promo/builds/irontide-itch.zip`
+1. 点 **Upload files**,选 `promo/builds/irontide-itch.zip（与门户版一样是单机版）`
 2. 上传后**必须勾选**该文件旁的 "**This file will be played in the browser**"
 
 ### 2.4 Embed options(嵌入设置——三维全屏游戏的推荐值)
@@ -151,7 +151,7 @@ naval, war, 3d, battleships, tanks, flight, shooter, singleplayer, arcade, open-
 
 ### 2.7 图片与视频
 
-- **Cover image:** 上传 630×500 封面(必填,没有封面页面不能发布)
+- **Cover image:** 上传 `promo/assets/final/cover-itch-titled-630x500.png`(**已生成**,带标题排版,尺寸正好是 itch 要求的 630×500)
 - **Screenshots:** 依次上传 `promo/assets/final/01-menu.png` 到 `final/06-briefing.png`
 - **Gameplay video or trailer:** 填周六上传的 YouTube 链接(见第 6 节)
 
@@ -170,14 +170,14 @@ WHAT'S INSIDE
 
 - A 31-theater world campaign, with a rival waiting at the end of it: Grand Marshal Varga, who talks to you over story radio dialogue
 - Ship, plane, tank and on-foot combat in one seamless battle — the tanks are amphibious
-- Mount extra cannons on your deck: buy them in the port shop, place them with F, then man them yourself
-- 12 medals and achievements, 3-star ratings on every theater, and a family high-score board
+- Mount extra cannons on your deck: buy them in the armory (Tab), place them with F, then man them yourself with E
+- 12 medals, a 3-star rating on every theater, and a shareable battle report
 - Quick battle mode and sandbox maps for when you just want a scrap
 - Dynamic weather, and procedural music with a distinct profile for each of the 31 theaters
 - Photo mode (press L) for screenshots, plus quality settings with adaptive bloom
 - Gamepad support and full touch controls — plays on desktop and mobile
 - Fully bilingual: English / 中文, switchable any time
-- An early multiplayer mode exists but is experimental — the campaign and quick battle are the real game today
+- Single-player: a 31-theater campaign, a quick-battle mode, and 7 sandbox maps
 
 CONTROLS
 
@@ -190,7 +190,7 @@ General: N strategic map · T first / third person · L photo mode · K settings
 
 Gamepad: left stick steers, right stick looks, triggers fire. On phones and tablets you get a virtual stick and context buttons.
 
-It's also a PWA — you can install it to your home screen and play offline.
+The copy at game.boobank.com also installs to your home screen and plays offline; the build here runs in the page.
 
 WHO MADE THIS
 
@@ -253,7 +253,7 @@ Ship, plane, tank, boots — one battle, four ways to fight. Free in your browse
 
 ---
 
-## 6. 30–60 秒视频 shot list(周六上午录)
+## 6. 视频 shot list(仅在你想重录时才需要 —— 成品已在 `promo/assets/final/`)
 
 **录制参数**:浏览器窗口开 1920×1080(或全屏),游戏里按 **I** 把画质调到最高、按 **J** 确认音乐开着。Mac 用 QuickTime(文件 → 新建屏幕录制)或 Cmd+Shift+5。取景大量用 **L** 拍照模式(自由飞行相机:WASD 飞、Space/Shift 升降)。
 

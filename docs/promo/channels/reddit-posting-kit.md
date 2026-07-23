@@ -96,7 +96,7 @@ My kid (GitHub: VideoGameTips) designed and built this naval action game almost 
 What's in it:
 - A 31-theater world campaign with a rival boss, "Grand Marshal Varga", who taunts you over story radio dialogue
 - You command a battleship, but you can also fly planes, drive amphibious tanks, and fight on foot
-- Mount extra cannons on your deck at the port shop (F key)
+- Buy extra deck guns in the armory (Tab), bolt them on with F, and man one yourself with E
 - 12 medals, 3-star ratings per theater, quick battle mode, sandbox maps, dynamic weather
 - Procedural music that changes per theater, photo mode (L key), gamepad + touch support, English/Chinese
 - Runs on desktop and mobile; it's a PWA so you can install it if you want (no install needed to play)
@@ -116,7 +116,7 @@ Brutal honesty welcome. I'll pass every comment on (kindly worded or not — I'l
 **发帖后立刻发的第一条评论(复制即用):**
 
 ```text
-A few tips if you jump in: F opens the port shop where you can bolt extra cannons onto your deck, and L is photo mode if you catch a nice storm. If anything breaks, tell me your device + browser and I'll get it fixed — issues also welcome at https://github.com/longmaolab/irontide/issues
+A few tips if you jump in: Tab opens the armory — buy a deck gun there, then F bolts it onto your deck and E lets you man it, and L is photo mode if you catch a nice storm. If anything breaks, tell me your device + browser and I'll get it fixed — issues also welcome at https://github.com/longmaolab/irontide/issues
 ```
 
 **当天义务(版规要求):** 发完帖后 1 小时内,去玩 2~3 个别人的游戏并留下认真反馈(和养号周同样的三段式结构)。这不仅是规则,也是这个版的文化——礼尚往来的人帖子活得久。
@@ -150,7 +150,7 @@ Dev's parent here. My kid (GitHub: VideoGameTips) designed and built this almost
 Quick orientation:
 - Campaign: 31 theaters across a world map, with a rival boss (Grand Marshal Varga) who talks to you over story radio
 - You're not stuck on the ship — you can fly planes, drive amphibious tanks, and fight on foot
-- F opens the port shop (mount extra cannons on your deck), L is photo mode
+- Tab opens the armory (buy a deck gun, then F mounts it, E mans it), L is photo mode
 - Quick battle and sandbox modes if you don't want the campaign
 - Works on mobile with touch controls, supports gamepads, has English/中文, and there's a quality setting if your machine struggles
 
@@ -179,7 +179,7 @@ Feedback and bug reports very welcome — include your device/browser and I'll p
 | 12–20s | 从战舰起飞,驾驶飞机空战一小段 |
 | 20–28s | 两栖坦克从海里开上滩头 |
 | 28–35s | 下车步行作战片段 |
-| 35–45s | 港口商店(按 F)给甲板加装火炮 → 加装后齐射对比 |
+| 35–45s | 军械库(按 Tab)买炮 → 按 F 装到甲板 → 加装后齐射对比 |
 | 45–55s | Grand Marshal Varga 的电台喊话 + Boss 战一个高光瞬间 |
 | 55–60s | 世界地图拉远展示 31 个战区,最后一帧叠加文字:`Free in your browser — link in comments` |
 

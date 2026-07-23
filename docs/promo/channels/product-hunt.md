@@ -9,13 +9,13 @@
 
 | 事项 | 结论 |
 |---|---|
-| 建议发布日 | **2026-08-16(周日,太平洋时间)**,即北京时间 **8月16日(周日)15:01 上线** |
+| 建议发布日 | **2026-08-23(周日,太平洋时间)**,即北京时间 **8月16日(周日)15:01 上线** |
 | 备选日 | 2026-08-17(周一 PT)= 北京时间周一 15:01;若 Reddit/HN 档期顺延,则改 08-23(周日)/08-24(周一) |
-| Coming Soon 预热页 | **7月26日(周日)前建好**,预热约 3 周 |
+| 预热 | **7月26日(周日)前**建好产品页并排期到 8/23;PH 已取消 Coming Soon 页面,改用产品自带的 Product Forum 帖预热 |
 | 谁来发 | 家长本人账号,自己 hunt 自己(2025-26 年约 60% 都是自发,完全正常) |
 | 孩子的身份 | 只用 GitHub ID「VideoGameTips」称呼,**绝不出现真名、年龄、城市、学校、照片**;PH 规定 16 岁以下不能注册,**不要给孩子建账号** |
 | 核心认知 | PH 现在是编辑精选制,只有约 10% 产品被 feature;没被选中≈几乎没流量。把这次当作**给孩子的一日鼓励活动 + 一条永久反链**,不是流量豪赌 |
-| 素材位置 | 截图 `promo/assets/final/01-menu.png … 06-briefing.png`;视频家长自录 30–60 秒(镜头清单见 §2.8);`promo/builds/irontide-itch.zip` 是给 itch.io 用的,**PH 不需要上传构建包** |
+| 素材位置 | 截图 `promo/assets/final/01-menu.png … 06-briefing.png`;视频**已生成好**:`promo/assets/final/iron-tide-hero-45s.mp4`(48 秒全片)、`iron-tide-clip-20s.mp4`(20 秒短版,Reddit/Discord 用)、`iron-tide-short-vertical.mp4`(竖版无音轨,Shorts/TikTok 用)、`preview.gif`(7 秒动图)。想重录:`node tools/capture-hero-video.js && node tools/cut-video-variants.js`;`promo/builds/irontide-itch.zip（与门户版一样是单机版）` 是给 itch.io 用的,**PH 不需要上传构建包** |
 
 ---
 
@@ -32,23 +32,19 @@ Parent and maintainer of Iron Tide — a browser battleship game my kid built. I
 
 3. 从现在到发布日,**每周花 30 分钟真实地用 PH**:给别人的产品点赞、留 2–3 条认真评论、关注 Games / Open Source 话题。这既是养账号,也是学习别人的发布页怎么写的。
 
-### 1.2 Coming Soon 预热页(7/26 前建好,预热约 3 周)
+### 1.2 预热(7/26 前做)
 
-操作:PH 右上角 Submit → 创建产品页 → 选择 “Schedule / Coming soon”,把发布日定在 **2026-08-16**(系统自动定为当日 12:01 AM PT)。
+⚠️ **PH 已于 2025-08-28 取消 Coming Soon / teaser 页面**,Submit 里已经没有 "Schedule / Coming soon" 这个选项了。别照旧攻略去找,找不到。
 
-预热页 headline 用正式 tagline(见 §2.2 第 1 名),描述粘贴:
+现在的做法:
 
-```text
-My kid built a 3D battleship game in (essentially) one 800KB HTML file: a 31-theater world campaign where you command a warship, fly planes, drive amphibious tanks, and fight on foot. Free in your browser, open source, no account, no ads. I'm the parent maintaining the polished fork — launching here on Sunday, August 16. Follow to get notified.
-```
+1. Submit → 正常创建产品页,把 launch 日期排到 **2026-08-23(周日)**。PH 允许最多提前约一个月排期,7/26 排 8/23 在范围内。
+2. 每个新建产品会自动获得一个 **Product Forum 讨论帖**——这就是现在的预热位。发布前在里面发 2–3 条开发进度或截图,让产品页在上线前就有内容和一点关注。
+3. 排期后产品页在 launch 日之前对外可见但不进排行榜,可以先把链接给几个朋友试玩、提前收 bug。
 
-预热页配图:用 `screenshot-01`(主视觉,见 §2.7)。
+### 1.3 为什么选 2026-08-23(周日)
 
-关注者会在发布当天收到 PH 的自动通知,这是前 4 小时冷启动的主要来源之一。
-
-### 1.3 为什么选 2026-08-16(周日)
-
-- **在 Reddit / HN 轮次之后**:假设 Reddit 在 7 月底、Show HN 在 8 月上旬完成,届时 bug 已被真实玩家踩过一轮,页面文案也验证过。若那两轮顺延,PH 就整体后移一周(08-23/08-24),Coming Soon 日期同步改。
+- **在 Reddit / HN 轮次之后**:假设 Reddit 在 7 月底、Show HN 在 8 月上旬完成,届时 bug 已被真实玩家踩过一轮,页面文案也验证过。若那两轮顺延,PH 就整体后移一周(08-30),排期日同步改。
 - **周日/周一是全周最容易进当日榜的两天**(竞品最少);周二到周四流量最大但强手如云。我们的目标是「被 feature + 拿名次给孩子留纪念」,不是抢流量,所以选周日。
 - **时区对家长极其友好**:12:01 AM PT(夏令时 UTC-7)= 北京时间 **同一个周日的 15:01**。周日下午上线、晚上盯盘,孩子也在家,可以一起看(但别让 TA 盯排名,见 §6)。
 - 免费浏览器游戏在 PH 是可行的:2026 年 7 月就有免费浏览器游戏(San Fran Sim)拿过当日 #3。
@@ -133,7 +129,7 @@ The honest story, because I'd rather over-share than have you wonder:
 - I maintain a polished fork (github.com/longmaolab/irontide): bug fixes, completing the English/Chinese localization, onboarding, achievements, and performance work. I used AI-assisted code review on that polish. The game itself is my kid's work.
 - Product Hunt requires account holders to be 16+, so I own this account and front the launch. My kid will read every comment here.
 
-What the game actually is: a free 3D naval-combat game that runs in your browser — no account, no ads, no install (it's a PWA if you do want to install it). You command a battleship, but you're not stuck on it: you can take off in planes, drive amphibious tanks onto the beach, and fight on foot. In port you can buy extra cannons and mount them on your own deck. There are 31 theaters, each with its own procedurally generated music profile, plus dynamic weather, a photo mode, gamepad and touch support, English/Chinese localization, and a family high-score board. It's essentially one ~800KB index.html plus three.js — the whole thing is readable in an afternoon. There's also an early multiplayer mode, but to be upfront: it's experimental and rough.
+What the game actually is: a free 3D naval-combat game that runs in your browser — no account, no ads, no install (it's a PWA if you do want to install it). You command a battleship, but you're not stuck on it: you can take off in planes, drive amphibious tanks onto the beach, and fight on foot. In port you can buy extra cannons and mount them on your own deck. There are 31 theaters, each with its own procedurally generated music profile, plus dynamic weather, a photo mode, gamepad and touch support, English/Chinese localization, and a shareable battle report card. It's essentially one ~800KB index.html plus three.js — the whole thing is readable in an afternoon. There's also an early multiplayer mode, but to be upfront: it's experimental and rough.
 
 Feedback that would mean the most:
 
@@ -157,7 +153,7 @@ Play: https://game.boobank.com/irontide/
 | 3 | `final/03-broadside.png` | 驾驶飞机空中视角,下方是海战战场 |
 | 4 | `final/04-armory.png` | 两栖坦克从海里冲上滩头、开火瞬间 |
 | 5 | `final/05-night.png` | 港口商店界面,正在给甲板加装副炮(F 键功能) |
-| 6 | `final/06-briefing.png` | 勋章/成就页 + 战区三星评价 + 家庭高分榜同框 |
+| 6 | `final/06-briefing.png` | 勋章/成就页 + 战区三星评价 + 可分享的战报卡片同框 |
 
 每张图上的英文条(按序):
 
@@ -182,7 +178,7 @@ Buy extra cannons in port and mount them on your own deck
 ```
 
 ```text
-12 medals, 3-star theater ratings, and a family high-score board
+12 medals, 3-star theater ratings, and a shareable battle report card
 ```
 
 补充:若能截到 Boss「Grand Marshal Varga」的电台对话画面,可作为第 7 张追加(PH 支持多图),英文条:
@@ -212,12 +208,12 @@ ffmpeg -ss 5 -t 3 -i promo/assets/final/iron-tide-hero-45s.mp4 \
 | 23–30s | 两栖坦克出海登陆、开火 | `Drive amphibious tanks ashore` |
 | 30–36s | 下船步行作战片段 | `Fight on foot` |
 | 36–43s | 港口商店买炮 → 甲板副炮全开齐射 | `Mount extra cannons on your deck` |
-| 43–50s | 勋章页 + 三星评价 + 家庭高分榜 | `Medals, stars, family scoreboard` |
+| 43–50s | 勋章页 + 三星评价 + 可分享的战报卡片 | `Medals, stars, family scoreboard` |
 | 50–58s | 最帅的一段海战收尾 → 结束卡 | `Free in your browser. No install, no ads. Open source.` 下一行 `game.boobank.com/irontide — built by a kid` |
 
 ---
 
-## 3. 发布日 Runbook(北京时间,2026-08-16 周日)
+## 3. 发布日 Runbook(北京时间,2026-08-23 周日)
 
 ### 3.1 时区对照(务必记牢)
 

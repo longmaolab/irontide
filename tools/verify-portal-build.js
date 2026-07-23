@@ -74,7 +74,7 @@ const server = http.createServer((req, res) => {
       };
     });
 
-    const want = variant === 'portal' ? { mpVisible: false } : { mpVisible: true };
+    const want = { mpVisible: false };   // both variants ship single-player (see build-portal.js)
     const checks = [
       ['boots to a live war',      probe.phase === 'play' && probe.driving],
       ['starter + bought guns',    probe.guns >= 3],
@@ -84,7 +84,8 @@ const server = http.createServer((req, res) => {
       ['procedural music running', probe.music],
       ['no service worker',        probe.swRegistered === false],
       ['multiplayer button rendered in menu', menuProbe.mpPresent],
-      [`multiplayer ${want.mpVisible ? 'visible' : 'hidden'}`, menuProbe.mpVisible === want.mpVisible],
+      ['multiplayer hidden', menuProbe.mpVisible === want.mpVisible],
+      ['no sw.js shipped (nothing registers it)', !fs.existsSync(path.join(ROOT, variant, 'sw.js'))],
       ['no console errors',        errors.length === 0],
     ];
     console.log(`\n=== ${variant} build (in iframe) ===`);

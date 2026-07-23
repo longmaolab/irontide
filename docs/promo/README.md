@@ -5,12 +5,22 @@
 
 ---
 
+## ⛔ 先读这个：[`channels/00-privacy-gate.md`](channels/00-privacy-gate.md)
+
+对抗式审查（8 个 agent 逐条核对平台规则和游戏事实）查出**两处正在生效的隐私泄露**：
+
+1. **游戏源码里有孩子的真名**——`index.html` 有四处中文注释写着他的名字，此刻正公开在线上站点上，任何人查看源码就能看到，两个发行 zip 里也有。**本次已修，需部署后生效。**
+2. **git 提交历史里有真名 + 私人邮箱**（`Andy Li <zianandyli@gmail.com>`，两个仓库都有）。而所有文案在被质疑"真的是小孩做的吗"时的标准答复都是"提交历史是公开的，你自己看"——等于**主动把最怀疑的人引向泄露点**。这条**还没修**，需要你在三个方案里选一个。
+
+**这两条处理完之前，任何渠道都不要发帖。** 详见隐私闸门那一页。
+
 ## 这个目录里有什么
 
 ```
-docs/promo/
+promo/
 ├── README.md            ← 你在读的这份：总控 + 日历 + 优先级
-├── channels/            8 份逐字可复制的渠道手册
+├── channels/            渠道手册（逐字可复制）
+│   ├── 00-privacy-gate.md      ⛔ 发帖前的隐私闸门（先读这个）
 │   ├── itch-io.md              itch.io 上架（零门槛，先做这个）
 │   ├── crazygames.md           CrazyGames Basic Launch（玩家量最大）
 │   ├── newgrounds.md           Newgrounds（即传即发，反馈文化强）
@@ -19,8 +29,6 @@ docs/promo/
 │   ├── show-hn.md              Hacker News Show HN
 │   ├── product-hunt.md         Product Hunt
 │   └── submit-once-kit.md      Free Game Planet / 两个 newsletter / YouTube Shorts
-
-promo/                   （不进版本库，用 tools/ 重新生成）
 ├── assets/final/        成品物料（下方清单）
 └── builds/              两个发行 zip（已 iframe 实测通过）
 ```
@@ -35,18 +43,13 @@ promo/                   （不进版本库，用 tools/ 重新生成）
 | `assets/final/04-armory.png` | 1600×900 | 截图 4（军械库分类面板 + 火力对比） |
 | `assets/final/05-night.png` | 1600×900 | 截图 5（星空夜战，月光水面） |
 | `assets/final/06-briefing.png` | 1600×900 | 截图 6（战区简报卡 OPERATION 1） |
-| `assets/final/cover-itch-titled-630x500.png` | 630×500 | itch.io 带标题封面（推荐用这版） |
-| `assets/final/cover-square-800x800.png` | 800×800 | 方形位（部分平台要方图） |
-| `assets/final/cover-social-1280x720.png` | 1280×720 | 社交分享大图 |
-| `assets/final/thumb-titled-240x240.png` | 240×240 | Product Hunt 缩略图 |
+| `assets/final/cover-itch-630x500.png` | 630×500 | itch.io 封面（尺寸是它的硬性要求） |
+| `assets/final/thumb-ph-240x240.png` | 240×240 | Product Hunt 缩略图 |
+| `assets/final/og-1280x720.png` | 1280×720 | 社交卡片 / YouTube 封面底图 |
 | `assets/final/preview.gif` | 600px 宽 7 秒 | Reddit / Discord / README 动图 |
-| `assets/final/iron-tide-hero-45s.mp4` | 1600×900 约 48 秒 | itch.io / PH / YouTube 主视频 |
-| `assets/final/iron-tide-clip-20s.mp4` | 1600×900 20 秒 | Reddit / Discord 原生上传（短的更容易看完） |
-| `assets/final/iron-tide-short-vertical.mp4` | 608×1080 22 秒无音轨 | YouTube Shorts / TikTok（无音轨方便套热门原声） |
+| `assets/final/iron-tide-hero-45s.mp4` | 1600×900 48 秒 | 所有渠道的视频位 |
 | `builds/irontide-itch.zip` | 0.4 MB | itch.io（保留联机入口，去掉 service worker） |
 | `builds/irontide-portal-singleplayer.zip` | 0.4 MB | CrazyGames / Newgrounds（额外隐藏联机入口） |
-
-**实测加载性能**（可直接写进渠道文案）：总传输 **435 KB**；桌面 0.52 秒出菜单、再 1.08 秒进入战斗；模拟 3G 手机 3.27 秒出菜单。CrazyGames 的硬上限是初始 50 MB、Poki 的目标是 8 MB——我们有极大余量，"点开就能玩"是实测不是话术。重跑：`node tools/measure-first-visit.js`。
 
 **hero 视频的镜头顺序**：舰桥第一人称推进（0–9.5s）→ 追尾视角对轰（9.5–18.5s）→ 环绕运镜（18.5–32.5s）→ 黎明光线（32.5–40.5s）→ 军械库面板（40.5–44.5s）。要剪短版就从环绕段截。
 
@@ -54,17 +57,9 @@ promo/                   （不进版本库，用 tools/ 重新生成）
 
 ```bash
 cd repo && npm install
-node tools/capture-screenshots.js      # 6 张规范截图 → promo/assets/final/
-node tools/render-covers.js            # 4 张带标题封面（尺寸已按平台要求）
-node tools/capture-hero-video.js       # 录制运镜脚本化的 hero 视频
-node tools/cut-video-variants.js       # 切出全片/20 秒/竖版/GIF 四个规格
-node tools/build-portal.js             # 生成 itch.io / 门户两个发行 zip
-node tools/verify-portal-build.js      # 在 iframe 里实测两个 zip（10 项检查）
-node tools/verify-og-tags.js           # 改过 <head> 之后跑，确认链接预览卡没坏
-node tools/measure-first-visit.js      # 冷缓存实测三档设备的首屏耗时
+node tools/capture-screenshots.js && node tools/capture-hero-video.js
+node tools/build-portal.js && node tools/verify-portal-build.js
 ```
-
-整条链路从空目录跑通过，没有任何手工挑图的中间步骤。
 
 `verify-portal-build.js` 会把两个 zip 解压到本地 HTTP 服务、**放进 iframe 里**跑 10 项检查（能开战、31 战区在、地形模块在、泛光在、配乐在、无 service worker、联机入口按预期显示/隐藏、无 console 报错）。上架前必跑，全绿再提交。
 
@@ -87,7 +82,7 @@ node tools/measure-first-visit.js      # 冷缓存实测三档设备的首屏耗
 
 | 时间 | 动作 | 手册 |
 |---|---|---|
-| **7/24 周五（今天）** | GitHub topics + homepage（**已完成**）；README 改版（**已完成**）；链接预览卡 OG 标签（**已完成**） | — |
+| **7/24 周五（今天）** | GitHub topics + homepage（**已完成**）；README 改版（**已完成**）；awesome-open-source-games PR（**已提交**） | — |
 | **7/25 周六** | itch.io 上架（草稿 → 实测 → 公开）；同日发首篇 devlog | `itch-io.md` |
 | **7/26 周日** | Newgrounds 上传；Free Game Planet + 两个 newsletter 各投一封 | `newgrounds.md` `submit-once-kit.md` |
 | **7/27 周一** | **开始养 Reddit 账号**（r/WebGames 要求 7 天号龄 + 10 comment karma）：每天认真评论 2–3 个别人的游戏 | `reddit-posting-kit.md` §1 |
@@ -105,21 +100,6 @@ node tools/measure-first-visit.js      # 冷缓存实测三档设备的首屏耗
 **为什么不同一天全发**：同样内容同时出现在多个平台首页会被识别成营销活动，招来版主删帖。而且服务器扛不住叠加流量。
 
 ---
-
-## 发链接时带上来源标记
-
-除 itch.io / CrazyGames（它们托管自己那份 zip，不走我们域名）外，其余渠道贴链接一律用带参数的地址：
-
-```
-https://game.boobank.com/irontide/?from=reddit-webgames
-https://game.boobank.com/irontide/?from=hn
-https://game.boobank.com/irontide/?from=ph
-https://game.boobank.com/irontide/?from=threejs-forum
-```
-
-游戏不读这个参数，但 Caddy 访问日志会记下来——这样每个渠道到底带来多少人，一条命令就能分开看，不需要任何第三方统计。统计命令见 [`docs/ANALYTICS.md`](../ANALYTICS.md) 的"推广期怎么看效果"。
-
-**顺带一个排障技巧**：有人反馈"手机上没有虚拟摇杆"时，让他开 `?touch=1` 强制打开触屏控制（`?touch=0` 强制关闭）——一次就能分清是触屏检测的问题还是别的问题。
 
 ## 上线前必做的三件事
 
@@ -153,18 +133,11 @@ https://game.boobank.com/irontide/?from=threejs-forum
 
 ---
 
-## 暂时不做的：GitHub awesome 清单
-
-`michelpereira/awesome-open-source-games` 的 contributing 明确写着 **"项目需存在 30 天以上且仓库至少 40 stars"**。Iron Tide 目前 0 star，现在提 PR 一定被拒，还会在维护者那里留下印象分。**等 star 到 40 再提**——itch.io 和 Reddit 的流量会自然带来 star。
-老牌的 `leereilly/games` 已归档，不再接收；`sjfricke/awesome-webgl` 只收库和文章，没有游戏分区。
-
-真正在起作用的 GitHub 发现渠道是 **topics 页面**（已配好 10 个），以及 itch.io 的 "made with three.js" 浏览页（上架后自动进）。
-
 ## 已经完成的动作
 
 - ✅ GitHub 仓库加了 10 个 topics（`threejs` `threejs-game` `browser-game` `webgl` `html5-game` `naval-combat` `game` `javascript-game` `open-source-game` `pwa`）+ homepage 指向试玩地址
 - ✅ README 改版：顶部一键试玩 CTA、英文一句话说明、5 张截图 + 动图、准确的内容量数字
-- ✅ 给 `index.html` 补了 Open Graph / Twitter Card 标签 + 1200×675 预览图：以前把链接发到 Reddit、Discord、微信、Slack 都只显示一条光秃秃的网址，现在会出大图卡片。**这是所有渠道共用的基础设施**，先修它收益最高。改动同时按仓库约定 bump 了 service worker 版本（v2 → v3），老用户才能拿到新版。
+- ✅ 向 `michelpereira/awesome-open-source-games` 提了收录 PR
 - ✅ 6 张宣传截图 + 3 种规格封面 + 动图 + 48 秒 hero 视频
 - ✅ 两个发行 zip，iframe 内 10 项检查全绿
 - ✅ 4 个可重复运行的物料生产脚本进了仓库 `tools/`

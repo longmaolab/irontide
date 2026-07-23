@@ -15,7 +15,7 @@
 
 | 时间 | 动作 |
 |---|---|
-| 今天(周五 7/24) | 录 30 秒视频(见第 1 节);注册 discourse.threejs.org 账号并浏览 10–15 分钟(提升新号信任等级,减少链接限制) |
+| 今天(周五 7/24) | 视频已生成(`promo/assets/final/iron-tide-clip-20s.mp4`);注册 discourse.threejs.org 账号并浏览 10–15 分钟(提升新号信任等级,减少链接限制) |
 | 今天或明天(7/24–7/25) | 提交 Discourse Showcase 帖。新用户首帖要过人工审核,周末可能慢,**预期 1–3 天才出现**,不要重复提交 |
 | 下周二 7/28 北京时间 21:00–23:00(= 美东周二上午 9–11 点) | 发 r/threejs 帖。该版块受众集中在欧美工作日白天,周二上午是稳妥档 |
 | 之后一周 | 每天看一次两边的回复,用第 4 节的模板回应 |
@@ -140,7 +140,7 @@ Iron Tide is a WWII-style naval campaign game: command a battleship through a 31
 
 ## Architecture: one HTML file, no bundler
 
-Essentially the entire game is a single ~800 KB `index.html`. `three.min.js` (r128) and the official example post-processing passes (EffectComposer, RenderPass, ShaderPass, UnrealBloomPass, and their shaders) are vendored locally — no CDN dependency at runtime, no npm, no build step. You can View Source the whole game.
+Essentially the entire game is a single ~800 KB `index.html`. `three.min.js` (r128) and the official example post-processing passes (EffectComposer, RenderPass, ShaderPass, UnrealBloomPass, and their shaders) are vendored locally — no npm, no build step, and you can View Source the whole game. (There is one network fallback: if the local three.js hasn't defined `window.THREE` after ~2s, the page injects the cdnjs copy of r128 rather than showing a dead canvas. Normal loads never hit it.)
 
 One deliberate exception: the island terrain math is extracted into a small `js/terrain.js` of pure functions, so it can be unit-tested in Node with a minimal `THREE.Vector3` stub.
 
