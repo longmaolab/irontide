@@ -94,6 +94,21 @@ node tools/verify-og-tags.js           # 改过 <head> 之后跑，确认链接�
 
 ---
 
+## 发链接时带上来源标记
+
+除 itch.io / CrazyGames（它们托管自己那份 zip，不走我们域名）外，其余渠道贴链接一律用带参数的地址：
+
+```
+https://game.boobank.com/irontide/?from=reddit-webgames
+https://game.boobank.com/irontide/?from=hn
+https://game.boobank.com/irontide/?from=ph
+https://game.boobank.com/irontide/?from=threejs-forum
+```
+
+游戏不读这个参数，但 Caddy 访问日志会记下来——这样每个渠道到底带来多少人，一条命令就能分开看，不需要任何第三方统计。统计命令见 [`docs/ANALYTICS.md`](../ANALYTICS.md) 的"推广期怎么看效果"。
+
+**顺带一个排障技巧**：有人反馈"手机上没有虚拟摇杆"时，让他开 `?touch=1` 强制打开触屏控制（`?touch=0` 强制关闭）——一次就能分清是触屏检测的问题还是别的问题。
+
 ## 上线前必做的三件事
 
 1. **压测**：Show HN 上首页 = 几小时内几万次访问。提前确认 Vultr VPS + Cloudflare tunnel 扛得住，建议给 `/irontide/*` 的静态资源加 Cloudflare cache-everything 规则。

@@ -37,3 +37,55 @@ Issue #40 的第 2 步(tutorial_step / first_death / session_end 三个事件)�
 **"先看流量,值得再做"**。日志刚开始积累,等有几周真实数据后再评估。
 如果将来要做:挂点已经勘察好(见 issue #40 正文),接收端用 Caddy 单独路由 + 追加写
 平面文件即可,依旧不建数据库、不存个人信息。
+
+## 推广期怎么看效果(2026-07 起)
+
+推广手册见 `docs/promo/README.md`。每个渠道带来的流量都能从访问日志里分开看,
+靠的是 **referer** 字段和 **每渠道一个 UTM 参数**——不需要任何第三方统计。
+
+### 发帖时给链接加上来源标记
+
+除了 itch.io / CrazyGames(它们托管的是自己那份 zip,不走我们的域名),
+其余渠道贴链接时都用带参数的地址,例如:
+
+```
+https://game.boobank.com/irontide/?from=reddit-webgames
+https://game.boobank.com/irontide/?from=hn
+https://game.boobank.com/irontide/?from=ph
+https://game.boobank.com/irontide/?from=threejs-forum
+```
+
+`from=` 这个参数游戏本身不读,只是让日志里能分辨来源。
+(注意:游戏**确实**会读一个 query 参数——`?touch=1` / `?touch=0` 可以强制开关触屏控制,
+见 `index.html` 的 `TOUCH` 常量。这在渠道反馈里有人说"手机上没有摇杆"时很有用:
+让对方开 `https://game.boobank.com/irontide/?touch=1` 试一次就能分清是检测问题还是别的问题。
+两个参数可以一起用:`?from=reddit-webgames&touch=1`。)
+
+### 按渠道统计
+
+```bash
+# 每个渠道的入口命中数
+grep '"uri":"/irontide/?from=' /var/log/caddy/access.log \
+  | grep -o 'from=[a-z0-9-]*' | sort | uniq -c | sort -rn
+
+# 没带参数但有 referer 的(别人转发的、搜索来的)
+grep '"uri":"/irontide/"' /var/log/caddy/access.log \
+  | grep -o '"Referer":\["[^"]*"' | sort | uniq -c | sort -rn | head -20
+
+# 发帖当天的逐小时曲线(判断有没有上首页)
+grep '/irontide/' /var/log/caddy/access.log \
+  | grep '2026-08-11' | grep -o 'T[0-9][0-9]' | sort | uniq -c
+```
+
+### 上大流量渠道之前
+
+Show HN 上首页意味着几小时内几万次访问。发帖**当天早上**先确认:
+
+```bash
+ssh root@207.148.98.206 'df -h /; free -m; systemctl is-active caddy'
+```
+
+游戏本体是纯静态文件(index.html + vendor),Caddy 扛这个量没问题;
+真正的风险是联机 WebSocket 打到同一台机器。发大流量渠道前,
+门户版 zip 已经隐藏了联机入口,自家站点则建议在高峰期留意
+`systemctl status godot-pvp-game` 之外的连接数。
