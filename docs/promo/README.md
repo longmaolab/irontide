@@ -35,11 +35,14 @@ promo/                   （不进版本库，用 tools/ 重新生成）
 | `assets/final/04-armory.png` | 1600×900 | 截图 4（军械库分类面板 + 火力对比） |
 | `assets/final/05-night.png` | 1600×900 | 截图 5（星空夜战，月光水面） |
 | `assets/final/06-briefing.png` | 1600×900 | 截图 6（战区简报卡 OPERATION 1） |
-| `assets/final/cover-itch-630x500.png` | 630×500 | itch.io 封面（尺寸是它的硬性要求） |
-| `assets/final/thumb-ph-240x240.png` | 240×240 | Product Hunt 缩略图 |
-| `assets/final/og-1280x720.png` | 1280×720 | 社交卡片 / YouTube 封面底图 |
+| `assets/final/cover-itch-titled-630x500.png` | 630×500 | itch.io 带标题封面（推荐用这版） |
+| `assets/final/cover-square-800x800.png` | 800×800 | 方形位（部分平台要方图） |
+| `assets/final/cover-social-1280x720.png` | 1280×720 | 社交分享大图 |
+| `assets/final/thumb-titled-240x240.png` | 240×240 | Product Hunt 缩略图 |
 | `assets/final/preview.gif` | 600px 宽 7 秒 | Reddit / Discord / README 动图 |
-| `assets/final/iron-tide-hero-45s.mp4` | 1600×900 48 秒 | 所有渠道的视频位 |
+| `assets/final/iron-tide-hero-45s.mp4` | 1600×900 约 48 秒 | itch.io / PH / YouTube 主视频 |
+| `assets/final/iron-tide-clip-20s.mp4` | 1600×900 20 秒 | Reddit / Discord 原生上传（短的更容易看完） |
+| `assets/final/iron-tide-short-vertical.mp4` | 608×1080 22 秒无音轨 | YouTube Shorts / TikTok（无音轨方便套热门原声） |
 | `builds/irontide-itch.zip` | 0.4 MB | itch.io（保留联机入口，去掉 service worker） |
 | `builds/irontide-portal-singleplayer.zip` | 0.4 MB | CrazyGames / Newgrounds（额外隐藏联机入口） |
 
@@ -51,10 +54,17 @@ promo/                   （不进版本库，用 tools/ 重新生成）
 
 ```bash
 cd repo && npm install
-node tools/capture-screenshots.js && node tools/capture-hero-video.js
-node tools/build-portal.js && node tools/verify-portal-build.js
+node tools/capture-screenshots.js      # 6 张规范截图 → promo/assets/final/
+node tools/render-covers.js            # 4 张带标题封面（尺寸已按平台要求）
+node tools/capture-hero-video.js       # 录制运镜脚本化的 hero 视频
+node tools/cut-video-variants.js       # 切出全片/20 秒/竖版/GIF 四个规格
+node tools/build-portal.js             # 生成 itch.io / 门户两个发行 zip
+node tools/verify-portal-build.js      # 在 iframe 里实测两个 zip（10 项检查）
 node tools/verify-og-tags.js           # 改过 <head> 之后跑，确认链接预览卡没坏
+node tools/measure-first-visit.js      # 冷缓存实测三档设备的首屏耗时
 ```
+
+整条链路从空目录跑通过，没有任何手工挑图的中间步骤。
 
 `verify-portal-build.js` 会把两个 zip 解压到本地 HTTP 服务、**放进 iframe 里**跑 10 项检查（能开战、31 战区在、地形模块在、泛光在、配乐在、无 service worker、联机入口按预期显示/隐藏、无 console 报错）。上架前必跑，全绿再提交。
 
