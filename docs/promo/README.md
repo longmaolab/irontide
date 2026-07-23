@@ -43,6 +43,8 @@ promo/                   （不进版本库，用 tools/ 重新生成）
 | `builds/irontide-itch.zip` | 0.4 MB | itch.io（保留联机入口，去掉 service worker） |
 | `builds/irontide-portal-singleplayer.zip` | 0.4 MB | CrazyGames / Newgrounds（额外隐藏联机入口） |
 
+**实测加载性能**（可直接写进渠道文案）：总传输 **435 KB**；桌面 0.52 秒出菜单、再 1.08 秒进入战斗；模拟 3G 手机 3.27 秒出菜单。CrazyGames 的硬上限是初始 50 MB、Poki 的目标是 8 MB——我们有极大余量，"点开就能玩"是实测不是话术。重跑：`node tools/measure-first-visit.js`。
+
 **hero 视频的镜头顺序**：舰桥第一人称推进（0–9.5s）→ 追尾视角对轰（9.5–18.5s）→ 环绕运镜（18.5–32.5s）→ 黎明光线（32.5–40.5s）→ 军械库面板（40.5–44.5s）。要剪短版就从环绕段截。
 
 **重新生成物料**（游戏更新后）：
