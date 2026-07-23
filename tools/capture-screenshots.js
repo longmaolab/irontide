@@ -1,40 +1,68 @@
-// Cinematic promo capture v2 — chase-view combat, photo-mode compositions, video recording.
+// Captures the promotion screenshot set straight from the live game.
+//
+// Output lands in promo/assets/final/ under the canonical names the launch kits
+// reference (docs/promo/channels/*.md), so this runs end to end with no manual
+// picking in between:
+//
+//   01-menu.png       English main menu — 31 theaters, sandbox maps, ship market
+//   02-combat-hud.png chase view mid-battle, enemy line + hit feed + full HUD
+//   03-broadside.png  close broadside pass, daylight, HUD hidden (hero shot)
+//   04-armory.png     the categorised armory with its firepower comparison
+//   05-night.png      night engagement, moonlit water, HUD hidden
+//   06-briefing.png   the theater briefing card
+//
+// Then: node tools/render-covers.js  (title-card covers built from these)
 const { chromium } = require('@playwright/test');
-const OUT = require('path').join(__dirname, '..', 'promo', 'assets');
+const path = require('path'), fs = require('fs');
+const OUT = path.join(__dirname, '..', 'promo', 'assets', 'final');
+const GAME = process.env.IRONTIDE_URL || 'https://game.boobank.com/irontide/';
+
+// Photo mode flies a free camera with the HUD hidden. Offsets are (forward, height,
+// starboard) relative to the player ship, so a composition survives any heading.
+async function compose(page, { forward, height, side, tod }) {
+  await page.evaluate(({ forward, height, side, tod }) => {
+    photoMode = true;
+    document.getElementById('hud').style.display = 'none';
+    if (tod != null) { weather.tod = tod; if (window._MAP) window._MAP.tod = tod; }
+    const h = player.heading, p = player.pos;
+    const f = { x: Math.sin(h), z: Math.cos(h) };
+    const r = { x: Math.cos(h), z: -Math.sin(h) };
+    photoPos.set(p.x + f.x * forward + r.x * side, height, p.z + f.z * forward + r.z * side);
+    const dx = p.x - photoPos.x, dz = p.z - photoPos.z, dy = 5 - photoPos.y;
+    camYaw.v = Math.atan2(dx, dz);
+    camPitch.v = Math.atan2(dy, Math.hypot(dx, dz));
+  }, { forward, height, side, tod });
+  await page.waitForTimeout(1000);
+}
 
 (async () => {
+  fs.mkdirSync(OUT, { recursive: true });
   const browser = await chromium.launch();
-  const context = await browser.newContext({
-    viewport: { width: 1600, height: 900 },
-    recordVideo: { dir: OUT + '/raw-video', size: { width: 1600, height: 900 } },
-  });
-  const page = await context.newPage();
+  const page = await browser.newPage({ viewport: { width: 1600, height: 900 } });
   page.on('pageerror', e => console.log('PAGEERROR', String(e).slice(0, 160)));
 
-  await page.goto('https://game.boobank.com/irontide/', { waitUntil: 'load' });
+  await page.goto(GAME, { waitUntil: 'load' });
   await page.waitForFunction(() => typeof startGame === 'function' && typeof SHIPS === 'object');
   await page.evaluate(() => {
-    const b = document.getElementById('storyBtn');
-    const s = document.getElementById('story');
-    if (b && s && s.style.display === 'flex') b.click();
+    const b = document.getElementById('storyBtn'), s = document.getElementById('story');
+    if (b && s && s.style.display === 'flex') b.click();   // dismiss the prologue
     setLang('en');
-    try { localStorage.setItem(TUT_DONE_KEY, '1'); } catch (e) {}
-    try { localStorage.setItem(TUT_PLANE_KEY, '1'); } catch (e) {}
-    try { localStorage.setItem(TUT_TANK_KEY, '1'); } catch (e) {}
+    for (const k of ['ironTideTutorialDone', 'ironTidePlaneTutDone', 'ironTideTankTutDone']) {
+      try { localStorage.setItem(k, '1'); } catch (e) {}   // tutorial banners would cover the frame
+    }
+    localStorage.setItem('ironTideDifficulty', 'normal');
   });
   await page.waitForTimeout(900);
-  await page.screenshot({ path: `${OUT}/screenshot-01-menu.png` });
-  console.log('01 menu');
+  await page.screenshot({ path: `${OUT}/01-menu.png` });
+  console.log('01-menu');
 
-  await page.evaluate(() => {
-    localStorage.setItem('ironTideDifficulty', 'normal');
-    startGame('battleship');
-  });
-  await page.waitForTimeout(1600);
-  await page.screenshot({ path: `${OUT}/screenshot-02-briefing.png` });
-  console.log('02 briefing');
+  await page.evaluate(() => startGame('battleship'));
+  await page.waitForTimeout(1600);                          // briefing card is on screen
+  await page.screenshot({ path: `${OUT}/06-briefing.png` });
+  console.log('06-briefing');
 
-  // Arm up, summon a proper engagement, switch to external chase view
+  // Arm the ship like a mid-campaign player and stage the engagement in front of it:
+  // spawnEnemy() drops ships near the enemy harbour, which is too far to photograph.
   await page.evaluate(() => {
     skipBanner();
     if (typeof skipTutorial === 'function') skipTutorial();
@@ -44,80 +72,47 @@ const OUT = require('path').join(__dirname, '..', 'promo', 'assets');
       try { tryPlace(); } catch (e) {}
     }
     selectedWeapon = null;
-    for (let i = 0; i < 3; i++) { try { spawnEnemy(); } catch (e) {} }
+    for (let i = 0; i < 4; i++) { try { spawnEnemy(); } catch (e) {} }
     const h = player.heading;
     const f = { x: Math.sin(h), z: Math.cos(h) };
     const r = { x: Math.cos(h), z: -Math.sin(h) };
-    const spread = [-38, -15, 8, 26, 44];
+    const bearings = [-34, -11, 12, 32, 50, -50];
     enemies.forEach((e, i) => {
-      const brg = (spread[i % spread.length] * Math.PI) / 180;
-      const dist = 190 + (i % 3) * 45;
-      const dir = {
-        x: f.x * Math.cos(brg) + r.x * Math.sin(brg),
-        z: f.z * Math.cos(brg) + r.z * Math.sin(brg),
-      };
-      e.pos.set(player.pos.x + dir.x * dist, 0, player.pos.z + dir.z * dist);
-      e.heading = h + Math.PI + brg * 0.5; // roughly facing the player
-      e.fireT = 0.5 + i * 0.6;
+      const brg = bearings[i % bearings.length] * Math.PI / 180;
+      const dist = 175 + (i % 3) * 40;
+      e.pos.set(player.pos.x + (f.x * Math.cos(brg) + r.x * Math.sin(brg)) * dist, 0,
+                player.pos.z + (f.z * Math.cos(brg) + r.z * Math.sin(brg)) * dist);
+      e.heading = h + Math.PI;
+      e.fireT = 0.3 + i * 0.4;                              // stagger so the volleys overlap
     });
-    fpv = true; // external chase view while driving
-    window._pan = setInterval(() => { camYaw.v += 0.0022; }, 33);
+    fpv = true;                                             // external chase view
   });
   await page.keyboard.down('KeyW');
-  await page.waitForTimeout(6000);
-  for (let i = 0; i < 6; i++) {
-    await page.screenshot({ path: `${OUT}/combat-${'abcdef'[i]}.png` });
-    await page.waitForTimeout(2500);
-  }
-  console.log('combat burst done');
-  await page.evaluate(() => clearInterval(window._pan));
-  await page.keyboard.up('KeyW');
+  await page.waitForTimeout(9000);                          // let the exchange build up
+  await page.screenshot({ path: `${OUT}/02-combat-hud.png` });
+  console.log('02-combat-hud');
 
-  // Photo-mode compositions (HUD hidden, free camera)
-  const compose = async (name, calc, tod) => {
-    await page.evaluate(({ calc, tod }) => {
-      photoMode = true;
-      document.getElementById('hud').style.display = 'none';
-      if (tod != null) {
-        weather.tod = tod;
-        if (window._MAP && window._MAP.tod != null) window._MAP.tod = tod;
-      }
-      const h = player.heading, p = player.pos;
-      const f = { x: Math.sin(h), z: Math.cos(h) };
-      const r = { x: Math.cos(h), z: -Math.sin(h) };
-      const o = { broadside: { x: r.x * 95 + f.x * 10, y: 14, z: r.z * 95 + f.z * 10 },
-                  bowlow:   { x: f.x * 70 + r.x * 28, y: 6,  z: f.z * 70 + r.z * 28 },
-                  aerial:   { x: -f.x * 120 - r.x * 40, y: 55, z: -f.z * 120 - r.z * 40 } }[calc];
-      photoPos.set(p.x + o.x, o.y, p.z + o.z);
-      const dx = p.x - photoPos.x, dz = p.z - photoPos.z, dy = 6 - photoPos.y;
-      camYaw.v = Math.atan2(dx, dz);
-      camPitch.v = Math.atan2(dy, Math.hypot(dx, dz));
-    }, { calc, tod });
-    await page.waitForTimeout(1100);
-    await page.screenshot({ path: `${OUT}/${name}.png` });
-    console.log(name);
-  };
-  await compose('photo-06-broadside', 'broadside', null);
-  await compose('photo-07-bowlow', 'bowlow', null);
-  await compose('photo-08-aerial', 'aerial', null);
-  await compose('photo-09-golden', 'broadside', 0.85);
+  await compose(page, { forward: 8, height: 11, side: 62 });
+  await page.screenshot({ path: `${OUT}/03-broadside.png` });
+  console.log('03-broadside');
 
-  // Back to normal, shop UI shot
-  await page.evaluate(() => {
-    weather.tod = 0.32;
-    if (window._MAP && window._MAP.tod != null) window._MAP.tod = 0.32;
+  await compose(page, { forward: 8, height: 11, side: 62, tod: 0.85 });
+  await page.screenshot({ path: `${OUT}/05-night.png` });
+  console.log('05-night');
+
+  await page.evaluate(() => {                               // back to daylight, HUD on
     photoMode = false;
+    weather.tod = 0.32; if (window._MAP) window._MAP.tod = 0.32;
     document.getElementById('hud').style.display = 'block';
     if (typeof updateMode === 'function') updateMode();
-    toggleShop();
   });
-  await page.waitForTimeout(700);
-  await page.screenshot({ path: `${OUT}/screenshot-05-shop.png` });
-  console.log('05 shop');
+  await page.keyboard.up('KeyW');
   await page.evaluate(() => toggleShop());
-  await page.waitForTimeout(400);
+  await page.waitForTimeout(700);
+  await page.screenshot({ path: `${OUT}/04-armory.png` });
+  console.log('04-armory');
+  await page.evaluate(() => toggleShop());
 
-  await context.close(); // flushes video
   await browser.close();
-  console.log('v2 capture complete');
+  console.log(`\n6 screenshots written to ${OUT}`);
 })();
