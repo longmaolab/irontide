@@ -110,6 +110,6 @@ node tools/verify-portal-build.js      # 在 iframe 里实测两个 zip（10 项
 
 <div align="center">
 
-**[▶ 开打](https://game.boobank.com/irontide/)** · MIT-ish：这是一个孩子的作品，随便玩、随便学、随便改
+**[▶ 开打](https://game.boobank.com/irontide/)**
 
 </div>

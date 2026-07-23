@@ -51,6 +51,7 @@ promo/                   （不进版本库，用 tools/ 重新生成）
 cd repo && npm install
 node tools/capture-screenshots.js && node tools/capture-hero-video.js
 node tools/build-portal.js && node tools/verify-portal-build.js
+node tools/verify-og-tags.js           # 改过 <head> 之后跑，确认链接预览卡没坏
 ```
 
 `verify-portal-build.js` 会把两个 zip 解压到本地 HTTP 服务、**放进 iframe 里**跑 10 项检查（能开战、31 战区在、地形模块在、泛光在、配乐在、无 service worker、联机入口按预期显示/隐藏、无 console 报错）。上架前必跑，全绿再提交。
@@ -74,7 +75,7 @@ node tools/build-portal.js && node tools/verify-portal-build.js
 
 | 时间 | 动作 | 手册 |
 |---|---|---|
-| **7/24 周五（今天）** | GitHub topics + homepage（**已完成**）；README 改版（**已完成**）；awesome-open-source-games PR（**已提交**） | — |
+| **7/24 周五（今天）** | GitHub topics + homepage（**已完成**）；README 改版（**已完成**）；链接预览卡 OG 标签（**已完成**） | — |
 | **7/25 周六** | itch.io 上架（草稿 → 实测 → 公开）；同日发首篇 devlog | `itch-io.md` |
 | **7/26 周日** | Newgrounds 上传；Free Game Planet + 两个 newsletter 各投一封 | `newgrounds.md` `submit-once-kit.md` |
 | **7/27 周一** | **开始养 Reddit 账号**（r/WebGames 要求 7 天号龄 + 10 comment karma）：每天认真评论 2–3 个别人的游戏 | `reddit-posting-kit.md` §1 |
@@ -125,11 +126,18 @@ node tools/build-portal.js && node tools/verify-portal-build.js
 
 ---
 
+## 暂时不做的：GitHub awesome 清单
+
+`michelpereira/awesome-open-source-games` 的 contributing 明确写着 **"项目需存在 30 天以上且仓库至少 40 stars"**。Iron Tide 目前 0 star，现在提 PR 一定被拒，还会在维护者那里留下印象分。**等 star 到 40 再提**——itch.io 和 Reddit 的流量会自然带来 star。
+老牌的 `leereilly/games` 已归档，不再接收；`sjfricke/awesome-webgl` 只收库和文章，没有游戏分区。
+
+真正在起作用的 GitHub 发现渠道是 **topics 页面**（已配好 10 个），以及 itch.io 的 "made with three.js" 浏览页（上架后自动进）。
+
 ## 已经完成的动作
 
 - ✅ GitHub 仓库加了 10 个 topics（`threejs` `threejs-game` `browser-game` `webgl` `html5-game` `naval-combat` `game` `javascript-game` `open-source-game` `pwa`）+ homepage 指向试玩地址
 - ✅ README 改版：顶部一键试玩 CTA、英文一句话说明、5 张截图 + 动图、准确的内容量数字
-- ✅ 向 `michelpereira/awesome-open-source-games` 提了收录 PR
+- ✅ 给 `index.html` 补了 Open Graph / Twitter Card 标签 + 1200×675 预览图：以前把链接发到 Reddit、Discord、微信、Slack 都只显示一条光秃秃的网址，现在会出大图卡片。**这是所有渠道共用的基础设施**，先修它收益最高。改动同时按仓库约定 bump 了 service worker 版本（v2 → v3），老用户才能拿到新版。
 - ✅ 6 张宣传截图 + 3 种规格封面 + 动图 + 48 秒 hero 视频
 - ✅ 两个发行 zip，iframe 内 10 项检查全绿
 - ✅ 4 个可重复运行的物料生产脚本进了仓库 `tools/`
