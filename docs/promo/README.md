@@ -19,6 +19,7 @@
 ```
 promo/
 ├── README.md            ← 你在读的这份：总控 + 日历 + 优先级
+├── AUDIT-FINDINGS.md    对抗式审查的 151 项完整发现（发帖前逐条自查）
 ├── channels/            渠道手册（逐字可复制）
 │   ├── 00-privacy-gate.md      ⛔ 发帖前的隐私闸门（先读这个）
 │   ├── itch-io.md              itch.io 上架（零门槛，先做这个）
